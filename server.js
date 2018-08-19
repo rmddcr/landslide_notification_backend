@@ -1,12 +1,30 @@
-/**
- * Created by digvijay on 19/7/17.
- */
+
 const express = require('express');
 const app = express();
 const db = require('./db');
 const path = require('path');
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
+
+
+
+
+
+
+var cookieParser = require('cookie-parser');
+var exphbs = require('express-handlebars');
+var expressValidator = require('express-validator');        //needed for the login part
+var flash = require('connect-flash');
+var session = require('express-session');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var mongo = require('mongodb');
+var mongoose = require('mongoose');
+
+
+
+
+
 //app.use('/', express.static(__dirname + "/public"));
 // var ngrok = require('ngrok');
 //
