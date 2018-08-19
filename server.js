@@ -29,22 +29,6 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 
-
-
-
-
-
-//app.use('/', express.static(__dirname + "/public"));
-// var ngrok = require('ngrok');
-//
-// //ngrok.connect(function (err, url) {}); // https://757c1652.ngrok.io -> http://localhost:80
-// ngrok.connect(3000, function (err, url) {if (err) throw err
-// console.log(url)}); // https://757c1652.ngrok.io -> http://localhost:9090
-//ngrok.connect({proto: 'tcp', addr: 22}, function (err, 0.0.0.0:3000) {}); // tcp://0.tcp.ngrok.io:48590
-
-
-
-
 // BodyParser Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -83,23 +67,40 @@ app.use(expressValidator({
       };
     }
   }));
+
+  
+  // Connect Flash
+app.use(flash());
+
+
+// Global Vars
+app.use(function (req, res, next) {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');
+    res.locals.user = req.user || null;
+    next();
+  });
+
   
 
-// app.get('/qtest/all', (req, res) => {
-//     db.fetchTasks(function (result) {
-//     console.log(result);
-//     res.send(result)
-//     });
+
+
+
+// app.get('/',(req,res)=>{
+//     res.redirect('/all');
 // });
-app.get('/',(req,res)=>{
-    res.redirect('/all');
-})
+
+app.use('/', routes);
+app.use('/users', users);
+
 app.get('/all', (req,res) => {
     db.fetchTasks(function (result) {
         console.log(result);
         res.render("home", {todos: result})
     });
 });
+
 app.get('/cats', (req,res) => {
     let cat=req.query.cat;
     db.fetchCatTask(cat,function (result) {
@@ -107,12 +108,14 @@ app.get('/cats', (req,res) => {
         res.render("home", {todos: result});
     });
 });
+
 app.get('/addq', (req,res) => {
     db.fetchTasks(function (result) {
         console.log(result);
         res.render("addq", {todos: result});
     });
 });
+
 app.get('/adda', (req,res) => {
     let qid=req.query.qid;
     let quest;
@@ -129,22 +132,20 @@ app.get('/adda', (req,res) => {
         });
     });
 });
-// app.post('/qtest/add', (req, res) => {
-//     db.addNewTask(req.body.title,req.body.descript, function (result) {
-//     res.send(result);
-// })
-// });
+
 app.post('/addq', (req, res) => {
     db.addNewTask(req.body.title,req.body.descript,req.body.category, function (result) {
         res.redirect('/addq');
     })
 });
+
 app.post('/adda', (req, res) => {
     let qid=req.query.qid;
     db.addAns(req.body.reply,qid, function (result) {
         res.redirect('/adda?qid='+qid);
     })
 });
+
 app.post('/aup', (req, res) => {
     let aid=req.query.aid;
     db.addup(aid, function (result) {
@@ -154,6 +155,7 @@ app.post('/aup', (req, res) => {
         res.send(result);
     })
 });
+
 app.post('/adown', (req, res) => {
     let aid=req.query.aid;
     db.adddown(aid, function (result) {
@@ -164,16 +166,32 @@ app.post('/adown', (req, res) => {
 })
 });
 
-// app.post('/qtest/addq', (req, res) => {
-//
-//     db.addNewTask(req.body.title,req.body.descript, function (result) {
-//     res.redirect('/all');
-// })
-//});
+
 
 app.use('/', express.static(__dirname + "/public"));
 
 app.listen(port,'0.0.0.0', () => {console.log('Started on 2352')});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // app.post('/todos/edit', (req, res) => {
 //
@@ -185,3 +203,33 @@ app.listen(port,'0.0.0.0', () => {console.log('Started on 2352')});
 //     }
 // )
 // });
+
+// app.post('/qtest/add', (req, res) => {
+//     db.addNewTask(req.body.title,req.body.descript, function (result) {
+//     res.send(result);
+// })
+// });
+
+
+// app.post('/qtest/addq', (req, res) => {
+//
+//     db.addNewTask(req.body.title,req.body.descript, function (result) {
+//     res.redirect('/all');
+// })
+//});
+
+// app.get('/qtest/all', (req, res) => {
+//     db.fetchTasks(function (result) {
+//     console.log(result);
+//     res.send(result)
+//     });
+// });
+
+
+//app.use('/', express.static(__dirname + "/public"));
+// var ngrok = require('ngrok');
+//
+// //ngrok.connect(function (err, url) {}); // https://757c1652.ngrok.io -> http://localhost:80
+// ngrok.connect(3000, function (err, url) {if (err) throw err
+// console.log(url)}); // https://757c1652.ngrok.io -> http://localhost:9090
+//ngrok.connect({proto: 'tcp', addr: 22}, function (err, 0.0.0.0:3000) {}); // tcp://0.tcp.ngrok.io:48590
