@@ -36,7 +36,7 @@ app.use(cookieParser());
 
 
 app.set("view engine", "hbs");
-app.engine('handlebars', exphbs({defaultLayout:'layout'}));//modified code 
+// app.engine('handlebars', exphbs({defaultLayout:'layout'}));//modified code 
 app.set("views", path.join(__dirname, "views"));
 
 

@@ -13,6 +13,10 @@ let dbconf = {
     database:'DMS_db'
 };
 
+
+
+
+
 function addNewTask (title, descript,category,done) {
     let conn = mysql.createConnection(dbconf);
     conn.connect();
@@ -79,6 +83,8 @@ function fetchatoq(qid,done) {
         }
     );
 }
+
+
 function addAns (ans, qid,done) {
     let conn = mysql.createConnection(dbconf);
     conn.connect();
