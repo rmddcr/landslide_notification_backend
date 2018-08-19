@@ -1,6 +1,6 @@
 
 const express = require('express');
-const app = express();
+const app = express(); // init app
 const db = require('./db');
 const path = require('path');
 const port = process.env.PORT || 3000;
@@ -20,6 +20,15 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/loginapp');
+var db2 = mongoose.connection;
+
+
+var routes = require('./routes/index');
+var users = require('./routes/users');
+
+
 
 
 
