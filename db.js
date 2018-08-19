@@ -9,8 +9,8 @@ const mysql = require('mysql');
 let dbconf = {
     host:'localhost',
     user:'root',//in my case it was root
-    password: '',
-    database:'hcl'
+    password: 'damitha@root',
+    database:'DMS_db'
 };
 
 function addNewTask (title, descript,category,done) {
