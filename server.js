@@ -25,8 +25,10 @@ mongoose.connect('mongodb://localhost/loginapp');
 var db2 = mongoose.connection;
 
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+
+// View Engine
+app.set("view engine", "hbs");
+app.set("views", path.join(__dirname, "views"));
 
 
 // BodyParser Middleware
@@ -35,10 +37,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 
-app.set("view engine", "hbs");
-// app.engine('handlebars', exphbs({defaultLayout:'layout'}));//modified code 
-app.set("views", path.join(__dirname, "views"));
-
+// Set Static Folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Express Session
@@ -48,7 +48,9 @@ app.use(session({
     resave: true
 }));
 
-
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Express Validator
 app.use(expressValidator({
@@ -90,6 +92,10 @@ app.use(function (req, res, next) {
 // app.get('/',(req,res)=>{
 //     res.redirect('/all');
 // });
+
+var routes = require('./routes/index');
+var users = require('./routes/users');
+
 
 app.use('/', routes);
 app.use('/users', users);
@@ -168,7 +174,6 @@ app.post('/adown', (req, res) => {
 
 
 
-app.use('/', express.static(__dirname + "/public"));
 
 app.listen(port,'0.0.0.0', () => {console.log('Started on 2352')});
 
